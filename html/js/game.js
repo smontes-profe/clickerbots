@@ -305,6 +305,10 @@ class Game {
             // Hide current enemy image during transition
             this.enemyImageEl.style.opacity = '0';
 
+            // Reset bars visually
+            this.enemyHpBar.style.width = '100%';
+            this.attackBar.style.width = '0%';
+
             // Show wave complete animation
             this.showWaveComplete();
             setTimeout(() => {
