@@ -434,9 +434,19 @@ class Game {
                 this.damageEnemy(ally.damage);
                 ally.lastAttack = now;
 
-                // Visual feedback for ally attack?
-                // Maybe shake the enemy card slightly or show a projectile?
-                // For now just the damage number
+                // Trigger Ally Animation
+                if (allyElements && allyElements.card) {
+                    const card = allyElements.card;
+                    card.classList.remove('attacking');
+                    void card.offsetWidth; // Force reflow
+                    card.classList.add('attacking');
+
+                    setTimeout(() => {
+                        card.classList.remove('attacking');
+                    }, 250);
+                }
+
+                // Visual feedback on enemy
                 const rect = this.enemyCard.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
