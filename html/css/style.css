@@ -119,15 +119,6 @@ body::before {
     transition: filter 0.2s;
 }
 
-.enemy-name {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px var(--primary-color);
-    flex-shrink: 0;
-}
-
 /* Bars */
 .bar-container {
     width: 100%;
@@ -141,13 +132,6 @@ body::before {
     flex-shrink: 0;
 }
 
-.bar-fill {
-    height: 100%;
-    width: 100%;
-    transition: width 0.2s ease-out;
-    box-shadow: 0 0 10px currentColor;
-}
-
 .hp-bar {
     box-shadow: 0 0 10px var(--secondary-color);
     border-color: var(--secondary-color);
@@ -156,6 +140,13 @@ body::before {
 .attack-bar {
     box-shadow: 0 0 10px #ff9d00;
     border-color: #ff9d00;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 100%;
+    transition: width 0.2s ease-out;
+    box-shadow: 0 0 10px currentColor;
 }
 
 .player-hp-bar {
