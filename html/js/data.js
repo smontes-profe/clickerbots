@@ -6,7 +6,7 @@ const GAME_DATA = {
         weaponLevel: 1
     },
     enemyTypes: {
-        basic: {
+        titan_prime: {
             name: "Titan Prime",
             image: "assets/enemy_robot.png",
             hp: 20,
@@ -15,13 +15,31 @@ const GAME_DATA = {
             attackSpeed: 2000,
             energonReward: 10
         },
-        boss: {
+        omega_boss: {
             name: "Omega Boss",
             image: "assets/boss_robot.png",
             hp: 50,
             maxHp: 50,
             damage: 10,
-            attackSpeed: 1000, // Twice as fast as basic
+            attackSpeed: 1000,
+            energonReward: 50
+        },
+        bombshell: {
+            name: "Bombshell",
+            image: "assets/bombshell.png",
+            hp: 20,
+            maxHp: 20,
+            damage: 10,
+            attackSpeed: 2000,
+            energonReward: 10
+        },
+        venom: {
+            name: "Venom",
+            image: "assets/venom.png",
+            hp: 50,
+            maxHp: 50,
+            damage: 10,
+            attackSpeed: 1000,
             energonReward: 50
         }
     },
@@ -34,15 +52,15 @@ const GAME_DATA = {
         {
             id: 1,
             enemies: [
-                { type: "basic", level: 1 }, { type: "basic", level: 1 }, { type: "basic", level: 1 }, { type: "basic", level: 1 }, { type: "basic", level: 1 },
-                { type: "basic", level: 1 }, { type: "basic", level: 1 }, { type: "basic", level: 1 }, { type: "basic", level: 1 }, { type: "boss", level: 1 }
+                { type: "bombshell", level: 1 }, { type: "bombshell", level: 1 }, { type: "bombshell", level: 1 }, { type: "bombshell", level: 1 }, { type: "bombshell", level: 1 },
+                { type: "bombshell", level: 1 }, { type: "bombshell", level: 1 }, { type: "bombshell", level: 1 }, { type: "bombshell", level: 1 }, { type: "venom", level: 1 }
             ]
         },
         {
             id: 2,
             enemies: [
-                { type: "basic", level: 2 }, { type: "basic", level: 2 }, { type: "basic", level: 2 }, { type: "basic", level: 2 }, { type: "basic", level: 2 },
-                { type: "basic", level: 2 }, { type: "basic", level: 2 }, { type: "basic", level: 2 }, { type: "basic", level: 2 }, { type: "boss", level: 2 }
+                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 },
+                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "venom", level: 2 }
             ]
         }
     ],
