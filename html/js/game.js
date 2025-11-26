@@ -8,6 +8,10 @@ class Game {
         this.gameLoopId = null;
         this.isPlaying = false;
 
+        // Allies
+        this.allies = {}; // { key: { level: 0, lastAttack: 0, ...data } }
+        this.allyElements = {}; // { key: { card, hpBar, attackBar, ... } }
+
         // DOM Elements
         this.enemyNameEl = document.getElementById('enemy-name');
         this.enemyImageEl = document.getElementById('enemy-image');
@@ -32,10 +36,21 @@ class Game {
         this.weaponLevelEl = document.getElementById('weapon-level');
         this.weaponDamageInfoEl = document.getElementById('weapon-damage-info');
 
+        this.alliesContainer = document.getElementById('allies-container');
+
+        // Ally Shop Elements (Bumblebee)
+        this.buyBumblebeeBtn = document.getElementById('buy-ally-bumblebee-btn');
+        this.bumblebeeCostEl = document.getElementById('ally-bumblebee-cost');
+        this.bumblebeeLevelEl = document.getElementById('ally-bumblebee-level');
+        this.bumblebeeHpEl = document.getElementById('ally-bumblebee-hp');
+        this.bumblebeeDmgEl = document.getElementById('ally-bumblebee-dmg');
+        this.bumblebeeSpeedEl = document.getElementById('ally-bumblebee-speed');
+
         // Bindings
         this.handleEnemyClick = this.handleEnemyClick.bind(this);
         this.restartGame = this.restartGame.bind(this);
         this.buyWeaponUpgrade = this.buyWeaponUpgrade.bind(this);
+        this.buyBumblebee = this.buyBumblebee.bind(this);
         this.loop = this.loop.bind(this);
 
         this.init();
@@ -45,6 +60,7 @@ class Game {
         this.enemyCard.addEventListener('click', this.handleEnemyClick);
         this.restartBtn.addEventListener('click', this.restartGame);
         this.upgradeWeaponBtn.addEventListener('click', this.buyWeaponUpgrade);
+        this.buyBumblebeeBtn.addEventListener('click', this.buyBumblebee);
         this.startGame();
     }
 
@@ -54,8 +70,14 @@ class Game {
         this.currentWaveIndex = 0;
         this.currentEnemyIndex = 0;
 
+        // Reset Allies
+        this.allies = {};
+        this.alliesContainer.innerHTML = '';
+        this.allyElements = {};
+
         this.updatePlayerUI();
         this.updateUpgradeUI();
+        this.updateAllyShopUI('bumblebee');
 
         // Load Enemy
         this.loadCurrentEnemy();
@@ -123,16 +145,56 @@ class Game {
         }
     }
 
+    updateAllyShopUI(allyKey) {
+        const allyData = GAME_DATA.allies[allyKey];
+        const currentAlly = this.allies[allyKey];
+        const level = currentAlly ? currentAlly.level : 0;
+
+        // Cost formula
+        const cost = Math.floor(allyData.baseCost * Math.pow(allyData.costMultiplier, level));
+
+        // Stats for next level (or current if level 0)
+        const nextLevel = level + 1;
+        const hp = Math.floor(allyData.baseHp * Math.pow(allyData.hpMultiplier, level));
+        const dmg = Math.floor(allyData.baseDamage * Math.pow(allyData.damageMultiplier, level));
+        // Attack speed doesn't change with level for now, or maybe it should? User didn't specify, assuming constant or base.
+        // User said: "valores para el siguiente nivel". Let's assume HP and DMG scale.
+
+        const nextHp = Math.floor(allyData.baseHp * Math.pow(allyData.hpMultiplier, nextLevel - 1));
+        const nextDmg = Math.floor(allyData.baseDamage * Math.pow(allyData.damageMultiplier, nextLevel - 1));
+
+        // Update DOM
+        if (allyKey === 'bumblebee') {
+            this.bumblebeeCostEl.textContent = cost;
+            this.bumblebeeLevelEl.textContent = `Lv ${level}`;
+            this.bumblebeeHpEl.textContent = `HP: ${hp} > ${nextHp}`;
+            this.bumblebeeDmgEl.textContent = `Dmg: ${dmg} > ${nextDmg}`;
+            this.bumblebeeSpeedEl.textContent = `Spd: ${(allyData.baseAttackSpeed / 1000).toFixed(1)}s`;
+
+            if (this.player.energon < cost) {
+                this.buyBumblebeeBtn.style.opacity = '0.5';
+                this.buyBumblebeeBtn.style.pointerEvents = 'none';
+            } else {
+                this.buyBumblebeeBtn.style.opacity = '1';
+                this.buyBumblebeeBtn.style.pointerEvents = 'all';
+            }
+        }
+    }
+
     handleEnemyClick(e) {
         if (!this.isPlaying) return;
 
         // Damage Enemy
         const damage = this.player.weaponLevel; // 1 damage per level
-        this.currentEnemy.hp -= damage;
+        this.damageEnemy(damage);
 
-        this.updateEnemyUI();
         this.triggerHitEffect(e.clientX, e.clientY, damage);
         this.triggerShake();
+    }
+
+    damageEnemy(amount) {
+        this.currentEnemy.hp -= amount;
+        this.updateEnemyUI();
 
         // Check Death
         if (this.currentEnemy.hp <= 0) {
@@ -153,6 +215,7 @@ class Game {
         this.triggerEnergonCollection(reward);
         this.updatePlayerUI();
         this.updateUpgradeUI();
+        this.updateAllyShopUI('bumblebee');
 
         // Progress
         this.currentEnemyIndex++;
@@ -175,21 +238,21 @@ class Game {
         this.lastAttackTime = Date.now();
     }
 
-    triggerLevelUpAnimation() {
+    triggerLevelUpAnimation(btn) {
         // Add active class for text animation
-        this.upgradeWeaponBtn.classList.remove('level-up-active');
-        void this.upgradeWeaponBtn.offsetWidth; // force reflow
-        this.upgradeWeaponBtn.classList.add('level-up-active');
+        btn.classList.remove('level-up-active');
+        void btn.offsetWidth; // force reflow
+        btn.classList.add('level-up-active');
 
         // Add glow effect
-        this.upgradeWeaponBtn.classList.remove('level-up-glow');
-        void this.upgradeWeaponBtn.offsetWidth;
-        this.upgradeWeaponBtn.classList.add('level-up-glow');
+        btn.classList.remove('level-up-glow');
+        void btn.offsetWidth;
+        btn.classList.add('level-up-glow');
 
         // Cleanup after animation duration (1.2s)
         setTimeout(() => {
-            this.upgradeWeaponBtn.classList.remove('level-up-active');
-            this.upgradeWeaponBtn.classList.remove('level-up-glow');
+            btn.classList.remove('level-up-active');
+            btn.classList.remove('level-up-glow');
         }, 1200);
     }
 
@@ -201,10 +264,79 @@ class Game {
             this.player.energon -= cost;
             this.player.weaponLevel++;
             // Trigger animation
-            this.triggerLevelUpAnimation();
+            this.triggerLevelUpAnimation(this.upgradeWeaponBtn);
             this.updatePlayerUI();
             this.updateUpgradeUI();
+            this.updateAllyShopUI('bumblebee'); // Update ally shop too as energon changed
         }
+    }
+
+    buyBumblebee() {
+        this.buyAlly('bumblebee', this.buyBumblebeeBtn);
+    }
+
+    buyAlly(allyKey, btnElement) {
+        const allyData = GAME_DATA.allies[allyKey];
+        const currentAlly = this.allies[allyKey];
+        const level = currentAlly ? currentAlly.level : 0;
+        const cost = Math.floor(allyData.baseCost * Math.pow(allyData.costMultiplier, level));
+
+        if (this.player.energon >= cost) {
+            this.player.energon -= cost;
+
+            if (!currentAlly) {
+                // First purchase
+                this.allies[allyKey] = {
+                    level: 1,
+                    lastAttack: Date.now(),
+                    hp: allyData.baseHp, // Current HP (for future use)
+                    maxHp: allyData.baseHp,
+                    damage: allyData.baseDamage,
+                    attackSpeed: allyData.baseAttackSpeed
+                };
+                this.spawnAllyCard(allyKey);
+            } else {
+                // Upgrade
+                this.allies[allyKey].level++;
+                // Update stats
+                const newLevel = this.allies[allyKey].level;
+                this.allies[allyKey].maxHp = Math.floor(allyData.baseHp * Math.pow(allyData.hpMultiplier, newLevel - 1));
+                this.allies[allyKey].damage = Math.floor(allyData.baseDamage * Math.pow(allyData.damageMultiplier, newLevel - 1));
+                this.allies[allyKey].hp = this.allies[allyKey].maxHp; // Heal on upgrade? Sure.
+            }
+
+            this.triggerLevelUpAnimation(btnElement);
+            this.updatePlayerUI();
+            this.updateUpgradeUI(); // Update weapon shop as energon changed
+            this.updateAllyShopUI(allyKey);
+        }
+    }
+
+    spawnAllyCard(allyKey) {
+        const allyData = GAME_DATA.allies[allyKey];
+
+        const card = document.createElement('div');
+        card.className = 'ally-card';
+        card.innerHTML = `
+            <img src="${allyData.image}" class="ally-image" alt="${allyData.name}">
+            <div class="ally-bars">
+                <div class="ally-bar-container ally-hp-bar">
+                    <div class="bar-fill" style="width: 100%;"></div>
+                </div>
+                <div class="ally-bar-container ally-attack-bar">
+                    <div class="bar-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+        `;
+
+        this.alliesContainer.appendChild(card);
+
+        // Store references
+        this.allyElements[allyKey] = {
+            card: card,
+            hpBar: card.querySelector('.ally-hp-bar .bar-fill'),
+            attackBar: card.querySelector('.ally-attack-bar .bar-fill')
+        };
     }
 
     triggerHitEffect(x, y, damage) {
@@ -280,10 +412,39 @@ class Game {
         const attackProgress = Math.min((timeSinceAttack / this.currentEnemy.attackSpeed) * 100, 100);
         this.attackBar.style.width = `${attackProgress}%`;
 
-        // Check Attack
+        // Check Enemy Attack
         if (timeSinceAttack >= this.currentEnemy.attackSpeed) {
             this.triggerEnemyAttack();
             this.lastAttackTime = now;
+        }
+
+        // Handle Allies
+        for (const [key, ally] of Object.entries(this.allies)) {
+            const timeSinceAllyAttack = now - ally.lastAttack;
+            const allyElements = this.allyElements[key];
+
+            // Update Ally Attack Bar
+            const allyAttackProgress = Math.min((timeSinceAllyAttack / ally.attackSpeed) * 100, 100);
+            if (allyElements) {
+                allyElements.attackBar.style.width = `${allyAttackProgress}%`;
+            }
+
+            // Check Ally Attack
+            if (timeSinceAllyAttack >= ally.attackSpeed) {
+                this.damageEnemy(ally.damage);
+                ally.lastAttack = now;
+
+                // Visual feedback for ally attack?
+                // Maybe shake the enemy card slightly or show a projectile?
+                // For now just the damage number
+                const rect = this.enemyCard.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                // Random offset
+                const offX = (Math.random() - 0.5) * 100;
+                const offY = (Math.random() - 0.5) * 100;
+                this.triggerHitEffect(centerX + offX, centerY + offY, ally.damage);
+            }
         }
 
         this.gameLoopId = requestAnimationFrame(this.loop);

@@ -39,5 +39,18 @@ const GAME_DATA = {
             baseCost: 10,
             costMultiplier: 1.5
         }
+    },
+    allies: {
+        bumblebee: {
+            name: "Bumblebee",
+            image: "assets/bumblebee.png",
+            baseHp: 50,
+            baseDamage: 2,
+            baseAttackSpeed: 3000, // ms
+            baseCost: 20,
+            costMultiplier: 1.6,
+            hpMultiplier: 1.2,
+            damageMultiplier: 1.2
+        }
     }
 };
