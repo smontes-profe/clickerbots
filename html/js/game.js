@@ -8,6 +8,7 @@ class Game {
         this.gameLoopId = null;
         this.isPlaying = false;
         this.isBossSpawning = false;
+        this.isWaveTransitioning = false;
 
 
         // Allies
@@ -246,7 +247,7 @@ class Game {
     }
 
     handleEnemyClick(e) {
-        if (!this.isPlaying || this.isBossSpawning) return;
+        if (!this.isPlaying || this.isBossSpawning || this.isWaveTransitioning) return;
 
 
         // Damage Enemy
@@ -292,6 +293,7 @@ class Game {
 
         if (this.currentEnemyIndex >= currentWave.enemies.length) {
             // Wave Complete!
+            this.isWaveTransitioning = true;
             this.currentWaveIndex++;
             this.currentEnemyIndex = 0;
 
@@ -300,10 +302,15 @@ class Game {
                 return;
             }
 
+            // Hide current enemy image during transition
+            this.enemyImageEl.style.opacity = '0';
+
             // Show wave complete animation
             this.showWaveComplete();
             setTimeout(() => {
+                this.isWaveTransitioning = false;
                 this.loadCurrentEnemy();
+                this.enemyImageEl.style.opacity = '1';
                 this.lastAttackTime = Date.now();
             }, 3000); // 3 seconds pause between waves
             return;
@@ -559,8 +566,8 @@ class Game {
 
         const now = Date.now();
 
-        // Skip enemy attack logic if boss is spawning
-        if (!this.isBossSpawning) {
+        // Skip enemy attack logic if boss is spawning or wave transitioning
+        if (!this.isBossSpawning && !this.isWaveTransitioning) {
             const timeSinceAttack = now - this.lastAttackTime;
 
             // Update Attack Bar
@@ -587,7 +594,7 @@ class Game {
 
             // Check Ally Attack
             if (timeSinceAllyAttack >= ally.attackSpeed) {
-                if (this.isBossSpawning) continue; // Wait for boss to spawn
+                if (this.isBossSpawning || this.isWaveTransitioning) continue; // Wait for boss to spawn or wave to transition
 
                 ally.lastAttack = now;
 
