@@ -117,6 +117,17 @@ const GAME_DATA = {
             costMultiplier: 1.6,
             hpMultiplier: 1.2,
             damageMultiplier: 1.2
+        },
+        wheeljack: {
+            name: "Wheeljack",
+            image: "assets/wheeljack.png",
+            baseHp: 50,
+            baseDamage: 5,
+            baseAttackSpeed: 1000, // ms
+            baseCost: 10,
+            costMultiplier: 1.6,
+            hpMultiplier: 1.2,
+            damageMultiplier: 1.2
         }
     }
 };
