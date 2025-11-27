@@ -104,19 +104,68 @@ body::before {
 .enemy-image-container {
     position: relative;
     width: 100%;
+    aspect-ratio: 1; /* Force square container */
     flex: 1;
     min-height: 0;
     overflow: hidden;
     border-radius: 10px;
     margin-bottom: 15px;
     border: 1px solid rgba(0, 243, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .enemy-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Maintain aspect ratio, never cut off */
     transition: filter 0.2s;
+    position: relative;
+    z-index: 1;
+}
+
+.card-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Maintain aspect ratio, never cut off */
+    pointer-events: none; /* Allow clicks to pass through */
+    z-index: 2; /* Always on top */
+}
+
+/* Enemy Header Compact */
+.enemy-header-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.wave-round-info {
+    font-size: 0.7rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.enemy-name-compact {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--secondary-color);
+    text-shadow: 0 0 15px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.enemy-level-compact {
+    font-size: 0.8rem;
+    color: var(--player-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--player-color);
 }
 
 /* Bars */
@@ -661,12 +710,71 @@ body::before {
     }
 
     .enemy-image-container {
-        flex: 1;
-    }
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1; /* Force square container */
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
     .enemy-image {
-        object-fit: contain;
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Maintain aspect ratio, never cut off */
+    transition: filter 0.2s;
+    position: relative;
+    z-index: 1;
+}
+
+.card-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Maintain aspect ratio, never cut off */
+    pointer-events: none; /* Allow clicks to pass through */
+    z-index: 2; /* Always on top */
+}
+
+/* Enemy Header Compact */
+.enemy-header-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.wave-round-info {
+    font-size: 0.7rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.enemy-name-compact {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--secondary-color);
+    text-shadow: 0 0 15px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.enemy-level-compact {
+    font-size: 0.8rem;
+    color: var(--player-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--player-color);
+}
 }
 
 /* Ally Attack Animation */
