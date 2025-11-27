@@ -42,6 +42,35 @@ const GAME_DATA = {
             attackSpeed: 1000,
             energonReward: 50
         }
+        ,
+        reflector: {
+            name: "Reflector",
+            image: "assets/Reflector.png",
+            hp: 30,
+            maxHp: 30,
+            damage: 15,
+            attackSpeed: 2000,
+            energonReward: 15
+        },
+        runabout: {
+            name: "Runabout & Runamuck",
+            image: "assets/Runabout.png",
+            hp: 40,
+            maxHp: 40,
+            damage: 10,
+            attackSpeed: 1500,
+            energonReward: 15
+        }
+        ,
+        thrust: {
+            name: "Thrust",
+            image: "assets/Thrust.png",
+            hp: 100,
+            maxHp: 100,
+            damage: 30,
+            attackSpeed: 2000,
+            energonReward: 75
+        }
     },
     levelMultipliers: {
         hp: 1.5,
@@ -59,8 +88,8 @@ const GAME_DATA = {
         {
             id: 2,
             enemies: [
-                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 },
-                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "venom", level: 2 }
+                { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 },
+                { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "thrust", level: 1 }
             ]
         }
     ],
