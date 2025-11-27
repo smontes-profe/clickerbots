@@ -73,11 +73,21 @@ class Game {
         this.bumblebeeDmgEl = document.getElementById('ally-bumblebee-dmg');
         this.bumblebeeSpeedEl = document.getElementById('ally-bumblebee-speed');
 
+        // Ally Shop Elements (Wheeljack)
+        this.buyWheeljackBtn = document.getElementById('buy-ally-wheeljack-btn');
+        this.wheeljackCostEl = document.getElementById('ally-wheeljack-cost');
+        this.wheeljackLevelEl = document.getElementById('ally-wheeljack-level');
+        this.wheeljackHpEl = document.getElementById('ally-wheeljack-hp');
+        this.wheeljackDmgEl = document.getElementById('ally-wheeljack-dmg');
+        this.wheeljackSpeedEl = document.getElementById('ally-wheeljack-speed');
+
         // Bindings
         this.handleEnemyClick = this.handleEnemyClick.bind(this);
         this.restartGame = this.restartGame.bind(this);
         this.buyWeaponUpgrade = this.buyWeaponUpgrade.bind(this);
+        this.buyWeaponUpgrade = this.buyWeaponUpgrade.bind(this);
         this.buyBumblebee = this.buyBumblebee.bind(this);
+        this.buyWheeljack = this.buyWheeljack.bind(this);
 
         this.loop = this.loop.bind(this);
         this.playSound = this.playSound.bind(this);
@@ -101,6 +111,7 @@ class Game {
         this.restartBtn.addEventListener('click', this.restartGame);
         this.upgradeWeaponBtn.addEventListener('click', this.buyWeaponUpgrade);
         this.buyBumblebeeBtn.addEventListener('click', this.buyBumblebee);
+        this.buyWheeljackBtn.addEventListener('click', this.buyWheeljack);
         this.startGame();
     }
 
@@ -118,6 +129,7 @@ class Game {
         this.updatePlayerUI();
         this.updateUpgradeUI();
         this.updateAllyShopUI('bumblebee');
+        this.updateAllyShopUI('wheeljack');
 
         // Load Enemy
         this.loadCurrentEnemy();
@@ -249,6 +261,20 @@ class Game {
                 this.buyBumblebeeBtn.style.opacity = '1';
                 this.buyBumblebeeBtn.style.pointerEvents = 'all';
             }
+        } else if (allyKey === 'wheeljack') {
+            this.wheeljackCostEl.textContent = cost;
+            this.wheeljackLevelEl.textContent = `Lv ${level}`;
+            this.wheeljackHpEl.textContent = `HP: ${hp} > ${nextHp}`;
+            this.wheeljackDmgEl.textContent = `Dmg: ${dmg} > ${nextDmg}`;
+            this.wheeljackSpeedEl.textContent = `Spd: ${(allyData.baseAttackSpeed / 1000).toFixed(1)}s`;
+
+            if (this.player.energon < cost) {
+                this.buyWheeljackBtn.style.opacity = '0.5';
+                this.buyWheeljackBtn.style.pointerEvents = 'none';
+            } else {
+                this.buyWheeljackBtn.style.opacity = '1';
+                this.buyWheeljackBtn.style.pointerEvents = 'all';
+            }
         }
     }
 
@@ -292,6 +318,7 @@ class Game {
         this.updatePlayerUI();
         this.updateUpgradeUI();
         this.updateAllyShopUI('bumblebee');
+        this.updateAllyShopUI('wheeljack');
 
         // Progress
         this.currentEnemyIndex++;
@@ -409,11 +436,16 @@ class Game {
             this.updatePlayerUI();
             this.updateUpgradeUI();
             this.updateAllyShopUI('bumblebee'); // Update ally shop too as energon changed
+            this.updateAllyShopUI('wheeljack');
         }
     }
 
     buyBumblebee() {
         this.buyAlly('bumblebee', this.buyBumblebeeBtn);
+    }
+
+    buyWheeljack() {
+        this.buyAlly('wheeljack', this.buyWheeljackBtn);
     }
 
     buyAlly(allyKey, btnElement) {
@@ -449,7 +481,8 @@ class Game {
             this.triggerLevelUpAnimation(btnElement);
             this.updatePlayerUI();
             this.updateUpgradeUI(); // Update weapon shop as energon changed
-            this.updateAllyShopUI(allyKey);
+            this.updateAllyShopUI('bumblebee');
+            this.updateAllyShopUI('wheeljack');
         }
     }
 
