@@ -13,46 +13,61 @@
 
 <body>
     <div class="game-container">
-        <!-- Enemy Card Grid -->
+        <!-- Block 1: Enemy Card (12x6) -->
         <div class="enemy-card">
-            <!-- LEFT: Enemy Image Only (4x6) -->
+            <!-- LEFT: Enemy Image (4x6) -->
             <div class="enemy-image-container">
                 <img src="assets/cards/enemies/Thrust.png" class="enemy-image" alt="Enemy">
                 <img src="assets/frames/card frame 1.png" class="card-frame" alt="Frame">
             </div>
 
-            <!-- RIGHT: Info Panel (8x6) -->
-            <!-- Row 1: Wave & Round Info -->
+            <!-- RIGHT: Enemy Info (8x6) -->
             <div class="wave-info">
                 <span class="wave-text">WAVE <span class="wave-num">1</span></span>
                 <span class="round-text">ROUND <span class="round-num">1</span></span>
             </div>
 
-            <!-- Row 2: Enemy Name & Level -->
             <div class="enemy-info">
                 <div class="enemy-name">Thrust</div>
                 <div class="enemy-level">Lv 1</div>
             </div>
 
-            <!-- Row 3: HP Label -->
             <div class="hp-bar-label">
                 <span>HP</span>
                 <span class="hp-text">750 / 1000</span>
             </div>
-
-            <!-- Row 4: HP Bar -->
             <div class="hp-bar-container">
                 <div class="hp-bar-fill" style="width: 75%;"></div>
             </div>
 
-            <!-- Row 5: Attack Label -->
             <div class="attack-bar-label">
                 <span>ATTACK TIMER</span>
             </div>
-
-            <!-- Row 6: Attack Bar -->
             <div class="attack-bar-container">
                 <div class="attack-bar-fill" style="width: 30%;"></div>
+            </div>
+        </div>
+
+        <!--Block 2: Player Stats (12x2) -->
+        <div class="player-stats-block">
+            <!-- LEFT: Player Health (8x2) -->
+            <div class="player-health-section">
+                <div class="player-health-label">
+                    <span>PLAYER HEALTH</span>
+                    <span class="player-hp-text">850 / 1000</span>
+                </div>
+                <div class="player-hp-bar-container">
+                    <div class="player-hp-bar-fill" style="width: 85%;"></div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Energon Display (4x2) -->
+            <div class="energon-section">
+                <div class="energon-label">Energon:</div>
+                <div class="energon-display">
+                    <img src="assets/energon.png" class="energon-icon" alt="Energon">
+                    <span class="energon-count">1234</span>
+                </div>
             </div>
         </div>
     </div>
