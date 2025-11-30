@@ -155,6 +155,10 @@ class Game {
         this.currentWaveIndex = 0;
         this.currentEnemyIndex = 0;
 
+        // Reset flags
+        this.isBossSpawning = false;
+        this.isWaveTransitioning = false;
+
         // Reset Allies
         this.allies = {};
         this.alliesContainer.innerHTML = '';
