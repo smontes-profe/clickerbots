@@ -259,7 +259,7 @@ class Game {
         // Damage Info
         const currentDmg = this.player.weaponLevel;
         const nextDmg = currentDmg + 1;
-        this.weaponDamageInfoEl.textContent = `Dmg: ${currentDmg} >> ${nextDmg}`;
+        this.weaponDamageInfoEl.textContent = currentDmg;
 
         // Disable if not enough money
         if (this.player.energon < cost) {
