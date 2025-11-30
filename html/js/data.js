@@ -3,7 +3,7 @@ const GAME_DATA = {
         hp: 100,
         maxHp: 100,
         energon: 0,
-        weaponLevel: 5
+        weaponLevel: 1
     },
     enemyTypes: {
         titan_prime: {
@@ -31,6 +31,15 @@ const GAME_DATA = {
             maxHp: 20,
             damage: 10,
             attackSpeed: 2000,
+            energonReward: 10
+        },
+        kickback: {
+            name: "Kickback",
+            image: "assets/cards/enemies/kickback.jpg",
+            hp: 18,
+            maxHp: 18,
+            damage: 6,
+            attackSpeed: 1000,
             energonReward: 10
         },
         venom: {
@@ -88,17 +97,17 @@ const GAME_DATA = {
         {
             id: 2,
             enemies: [
-                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 },
-                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "venom", level: 2 }
+                { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 },
+                { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "thrust", level: 1 }
             ]
         },
         {
             id: 3,
             enemies: [
-                { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 },
-                { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "runabout", level: 1 }, { type: "reflector", level: 1 }, { type: "thrust", level: 1 }
+                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 },
+                { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "bombshell", level: 2 }, { type: "venom", level: 2 }
             ]
-        }
+        },
     ],
     upgrades: {
         weapon: {
@@ -114,7 +123,7 @@ const GAME_DATA = {
             image: "assets/cards/allies/bumblebee.jpg",
             baseHp: 50,
             baseDamage: 5,
-            baseAttackSpeed: 1000, // ms
+            baseAttackSpeed: 1500, // ms
             baseCost: 10,
             costMultiplier: 1.6,
             hpMultiplier: 1.2,
@@ -123,10 +132,10 @@ const GAME_DATA = {
         wheeljack: {
             name: "Wheeljack",
             image: "assets/cards/allies/wheeljack.jpg",
-            baseHp: 50,
-            baseDamage: 50,
-            baseAttackSpeed: 2000, // ms
-            baseCost: 50,
+            baseHp: 200,
+            baseDamage: 20,
+            baseAttackSpeed: 3000, // ms
+            baseCost: 100,
             costMultiplier: 1.6,
             hpMultiplier: 1.2,
             damageMultiplier: 1.2
