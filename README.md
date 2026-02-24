@@ -1,3 +1,2 @@
 # clickerbots
 clickerbots
-//testing
